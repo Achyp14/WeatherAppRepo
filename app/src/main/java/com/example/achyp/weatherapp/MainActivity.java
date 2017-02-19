@@ -9,14 +9,16 @@ import javax.inject.Inject;
 
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     @Inject
-    WeatherService weatherService;
+    WeatherService mWeatherService;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ((WeatherApplication) getApplication()).getAppComponent().inject(this);
+        mWeatherService.requestWeatherByCityName("London");
     }
 }

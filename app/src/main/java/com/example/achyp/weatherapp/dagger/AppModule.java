@@ -39,7 +39,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    WeatherService provideWeatherService() {
-        return new WeatherServiceImpl();
+    WeatherService provideWeatherService(final Retrofit retrofit) {
+        return new WeatherServiceImpl(retrofit);
     }
 }
