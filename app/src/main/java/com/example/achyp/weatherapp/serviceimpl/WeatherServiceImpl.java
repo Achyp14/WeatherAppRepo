@@ -1,5 +1,7 @@
 package com.example.achyp.weatherapp.serviceimpl;
 
+import android.util.Log;
+
 import com.example.achyp.weatherapp.BuildConfig;
 import com.example.achyp.weatherapp.pojo.Forecast;
 import com.example.achyp.weatherapp.services.WeatherService;
@@ -25,7 +27,6 @@ public class WeatherServiceImpl implements WeatherService {
         Call<Forecast> getForecast(@Query("q") String cityName, @Query("APPID") String apiKey);
     }
 
-    @Inject
     public WeatherServiceImpl(Retrofit retrofit) {
         mRetrofit = retrofit;
         mWeatherAPI = mRetrofit.create(WeatherAPI.class);

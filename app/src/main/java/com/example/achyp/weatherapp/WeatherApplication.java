@@ -8,7 +8,7 @@ import com.example.achyp.weatherapp.dagger.DaggerAppComponent;
 
 
 public class WeatherApplication extends MultiDexApplication {
-    private static final String BASE_URL = "http://samples.openweathermap.org/data/2.5/";
+    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
     private AppComponent appComponent;
 
     @Override
