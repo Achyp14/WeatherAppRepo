@@ -14,7 +14,7 @@ public class Forecast {
     public List<Weather> weather;
     public String base;
     public MainInfo main;
-    public int visibility;
+    public float visibility;
     public Wind wind;
     public Cloud cloud;
     public long dt;
