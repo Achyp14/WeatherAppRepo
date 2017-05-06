@@ -3,20 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:id="@+id/main_activity_coordinator_layout"
+    android:id="@+id/collapse_coordinator_layout"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/main_activity_appbar_layout"
+        android:id="@+id/collapse_appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/main_activity_collapsing_toolbar_layout"
+            android:id="@+id/collapse_collapsing_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -26,16 +26,16 @@
             app:expandedTitleMarginEnd="64dp">
 
             <!--<ImageView-->
-                <!--android:id="@+id/main.backdrop"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:scaleType="centerCrop"-->
-                <!--android:fitsSystemWindows="true"-->
-                <!--app:layout_collapseMode="pin"-->
-                <!--/>-->
+            <!--android:id="@+id/main.backdrop"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:fitsSystemWindows="true"-->
+            <!--app:layout_collapseMode="pin"-->
+            <!--/>-->
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/main_activity_toolbar"
+                android:id="@+id/collapse_toolbar"
                 app:titleMarginBottom="50dp"
                 app:title="Hello"
                 android:layout_width="match_parent"
@@ -46,13 +46,13 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/main_activity_nested_scroll_view"
+        android:id="@+id/collapse_nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
-            android:id="@+id/main_activity_temp"
+            android:id="@+id/collapse_temp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -62,12 +62,12 @@
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/main_activity_fab"
+        android:id="@+id/collapse_fab"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_margin="@dimen/activity_horizontal_margin"
         app:backgroundTint="@color/colorFAB"
         app:srcCompat="@drawable/ic_add_black_24px"
-        app:layout_anchor="@id/main_activity_appbar_layout"
+        app:layout_anchor="@id/collapse_appbar_layout"
         app:layout_anchorGravity="bottom|right|end" />
 </android.support.design.widget.CoordinatorLayout>

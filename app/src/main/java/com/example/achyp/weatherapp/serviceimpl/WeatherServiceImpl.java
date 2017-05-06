@@ -3,6 +3,7 @@ package com.example.achyp.weatherapp.serviceimpl;
 import android.util.Log;
 
 import com.example.achyp.weatherapp.BuildConfig;
+import com.example.achyp.weatherapp.callback.Observer;
 import com.example.achyp.weatherapp.pojo.Forecast;
 import com.example.achyp.weatherapp.services.WeatherService;
 
@@ -18,17 +19,20 @@ import retrofit2.http.Query;
 public class WeatherServiceImpl implements WeatherService {
     private static final String TAG = "WeatherServiceImpl";
 
+
+    private Observer mObserver;
     private Retrofit mRetrofit;
     private WeatherAPI mWeatherAPI;
-
 
     interface WeatherAPI {
         @GET("weather")
         Call<Forecast> getForecast(@Query("q") String cityName, @Query("APPID") String apiKey);
     }
 
-    public WeatherServiceImpl(Retrofit retrofit) {
+    @Inject
+    public WeatherServiceImpl(Retrofit retrofit, Observer observer) {
         mRetrofit = retrofit;
+        mObserver = observer;
         mWeatherAPI = mRetrofit.create(WeatherAPI.class);
     }
 
@@ -39,12 +43,13 @@ public class WeatherServiceImpl implements WeatherService {
             @Override
             public void onResponse(final Call<Forecast> call, final Response<Forecast> response) {
                 if (response.isSuccessful()) {
-
+                    mObserver.successResponse(response.body());
                 }
             }
 
             @Override
             public void onFailure(final Call<Forecast> call, final Throwable t) {
+                mObserver.failedResponse();
             }
         });
     }

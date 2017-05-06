@@ -1,26 +1,41 @@
-package com.example.achyp.weatherapp;
+package com.example.achyp.weatherapp.ui;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.example.achyp.weatherapp.R;
+import com.example.achyp.weatherapp.WeatherApplication;
+import com.example.achyp.weatherapp.callback.Observer;
+import com.example.achyp.weatherapp.pojo.Forecast;
 import com.example.achyp.weatherapp.services.WeatherService;
 
 import javax.inject.Inject;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Observer.OnReceiveResponseListener {
     private static final String TAG = "MainActivity";
 
     @Inject
     WeatherService mWeatherService;
+
+    @Inject
+    Observer mObserver;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -29,6 +44,17 @@ public class MainActivity extends AppCompatActivity {
         inject();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mObserver.register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mObserver.unregister(this);
+    }
 
     private void inject() {
         ((WeatherApplication) getApplication()).getAppComponent().inject(this);
@@ -49,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 // TODO start searching
                 return true;
             default:
-               return false;
+                return false;
         }
     }
 
@@ -64,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         final MenuItem menuItem = menu.findItem(R.id.search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(final String query) {
@@ -77,5 +102,19 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onSuccess(final Forecast forecast) {
+        Toast.makeText(this, forecast.weather.get(0).main +  " " + forecast.weather.get(0).description, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onFailure() {
+        Toast.makeText(this, "City wasn't found", Toast.LENGTH_LONG).show();
+    }
+
+    private void updateView(final Forecast forecast) {
+
     }
 }
