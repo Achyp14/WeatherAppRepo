@@ -1,7 +1,7 @@
 package com.example.achyp.weatherapp.dagger;
 
 
-import com.example.achyp.weatherapp.MainActivity;
+import com.example.achyp.weatherapp.ui.MainActivity;
 
 import javax.inject.Singleton;
 

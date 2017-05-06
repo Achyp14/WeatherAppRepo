@@ -1,5 +1,7 @@
 package com.example.achyp.weatherapp.dagger;
 
+import com.example.achyp.weatherapp.callback.Observer;
+import com.example.achyp.weatherapp.callback.ObserverImpl;
 import com.example.achyp.weatherapp.serviceimpl.WeatherServiceImpl;
 import com.example.achyp.weatherapp.services.WeatherService;
 import com.google.gson.Gson;
@@ -39,7 +41,13 @@ public class AppModule {
 
     @Provides
     @Singleton
-    WeatherService provideWeatherService(final Retrofit retrofit) {
-        return new WeatherServiceImpl(retrofit);
+    Observer provideObserver() {
+        return new ObserverImpl();
+    }
+
+    @Provides
+    @Singleton
+    WeatherService provideWeatherService(final Retrofit retrofit, final Observer observer) {
+        return new WeatherServiceImpl(retrofit, observer);
     }
 }
