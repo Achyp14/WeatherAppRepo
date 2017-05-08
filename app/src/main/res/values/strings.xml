@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="search_title">Search</string>
+    <string name="main_activity_city">City</string>
+    <string name="main_activity_temperature">Temperature</string>
+    <string name="main_activity_rain">Rain</string>
+    <string name="main_activity_wind">Wind</string>
+    <string name="main_activity_no_rain_text">No rain for today</string>
 </resources>

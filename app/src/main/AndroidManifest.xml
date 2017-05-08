@@ -8,7 +8,7 @@
         android:name=".WeatherApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="WeatherApp"
+        android:label=""
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
