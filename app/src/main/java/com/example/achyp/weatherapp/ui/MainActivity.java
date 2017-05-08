@@ -1,11 +1,8 @@
 package com.example.achyp.weatherapp.ui;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.achyp.weatherapp.R;
@@ -24,12 +22,17 @@ import com.example.achyp.weatherapp.WeatherApplication;
 import com.example.achyp.weatherapp.callback.Observer;
 import com.example.achyp.weatherapp.pojo.Forecast;
 import com.example.achyp.weatherapp.services.WeatherService;
+import com.example.achyp.weatherapp.type.ValueType;
+import com.example.achyp.weatherapp.utils.StringUtils;
 
 import javax.inject.Inject;
 
-
+/**
+ * Class for presentation main information.
+ */
 public class MainActivity extends AppCompatActivity implements Observer.OnReceiveResponseListener {
     private static final String TAG = "MainActivity";
+    private static final String FORECAST_KEY = "forecast";
 
     @Inject
     WeatherService mWeatherService;
@@ -37,11 +40,25 @@ public class MainActivity extends AppCompatActivity implements Observer.OnReceiv
     @Inject
     Observer mObserver;
 
+    // UI component
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
+    private TextView mCityTextView;
+    private TextView mTempTextView;
+    private TextView mRainTextView;
+    private TextView mWindTextView;
+
+    // Model
+    private Forecast mForecast;
+
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         inject();
+        initView();
     }
 
     @Override
@@ -54,6 +71,21 @@ public class MainActivity extends AppCompatActivity implements Observer.OnReceiv
     protected void onStop() {
         super.onStop();
         mObserver.unregister(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        outState.putSerializable(FORECAST_KEY, mForecast);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null && savedInstanceState.containsKey(FORECAST_KEY)) {
+            mForecast = (Forecast) savedInstanceState.getSerializable(FORECAST_KEY);
+            updateView(mForecast);
+        }
     }
 
     private void inject() {
@@ -70,13 +102,7 @@ public class MainActivity extends AppCompatActivity implements Observer.OnReceiv
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.search:
-                // TODO start searching
-                return true;
-            default:
-                return false;
-        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -106,7 +132,8 @@ public class MainActivity extends AppCompatActivity implements Observer.OnReceiv
 
     @Override
     public void onSuccess(final Forecast forecast) {
-        Toast.makeText(this, forecast.weather.get(0).main +  " " + forecast.weather.get(0).description, Toast.LENGTH_LONG).show();
+        mForecast = forecast;
+        updateView(forecast);
     }
 
     @Override
@@ -114,7 +141,29 @@ public class MainActivity extends AppCompatActivity implements Observer.OnReceiv
         Toast.makeText(this, "City wasn't found", Toast.LENGTH_LONG).show();
     }
 
-    private void updateView(final Forecast forecast) {
+    private void initView() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mToolbar = (Toolbar) findViewById(R.id.collapse_toolbar);
+        setSupportActionBar(mToolbar);
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name, R.string.app_name);
+        mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
+        mActionBarDrawerToggle.syncState();
+        mCityTextView = (TextView) findViewById(R.id.collapse_city_text);
+        mTempTextView = (TextView) findViewById(R.id.collapse_temp_text);
+        mRainTextView = (TextView) findViewById(R.id.collapse_rain_text);
+        mWindTextView = (TextView) findViewById(R.id.collapse_wind_text);
+    }
 
+    private void updateView(final Forecast forecast) {
+        findViewById(R.id.collapse_forecast_root_view).setVisibility(View.VISIBLE);
+        mCityTextView.setText(forecast.name);
+        mTempTextView.setText(StringUtils.convertFahrenheitToCelsius(forecast.main.temperature));
+        if (forecast.rain == null) {
+            mRainTextView.setText(getString(R.string.main_activity_no_rain_text));
+        } else {
+            mRainTextView.setText(StringUtils.appendToText(ValueType.RAIN, forecast.rain.rain));
+
+        }
+        mWindTextView.setText(StringUtils.appendToText(ValueType.WIND, forecast.wind.speed));
     }
 }
