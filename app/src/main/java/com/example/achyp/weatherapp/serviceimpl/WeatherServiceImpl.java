@@ -1,7 +1,5 @@
 package com.example.achyp.weatherapp.serviceimpl;
 
-import android.util.Log;
-
 import com.example.achyp.weatherapp.BuildConfig;
 import com.example.achyp.weatherapp.callback.Observer;
 import com.example.achyp.weatherapp.pojo.Forecast;
@@ -21,7 +19,6 @@ public class WeatherServiceImpl implements WeatherService {
 
 
     private Observer mObserver;
-    private Retrofit mRetrofit;
     private WeatherAPI mWeatherAPI;
 
     interface WeatherAPI {
@@ -30,10 +27,9 @@ public class WeatherServiceImpl implements WeatherService {
     }
 
     @Inject
-    public WeatherServiceImpl(Retrofit retrofit, Observer observer) {
-        mRetrofit = retrofit;
+    public WeatherServiceImpl(final Retrofit retrofit, final Observer observer) {
         mObserver = observer;
-        mWeatherAPI = mRetrofit.create(WeatherAPI.class);
+        mWeatherAPI = retrofit.create(WeatherAPI.class);
     }
 
     @Override

@@ -27,8 +27,8 @@ public final class StringUtils {
         }
     }
 
-    public static String convertFahrenheitToCelsius(@NonNull final float temperature) {
-        final int celsius = (int) (temperature - 32) * 5 / 9;
-        return celsius + CELSIUS;
+    public static String convertKelvinToCelsius(final float temperature) {
+        final double celsius =  (temperature - 273.15);
+        return Math.round(celsius) + CELSIUS;
     }
 }

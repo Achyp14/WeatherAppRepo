@@ -1,7 +1,10 @@
 package com.example.achyp.weatherapp.dagger;
 
+import com.activeandroid.ActiveAndroid;
 import com.example.achyp.weatherapp.callback.Observer;
 import com.example.achyp.weatherapp.callback.ObserverImpl;
+import com.example.achyp.weatherapp.manager.DBManager;
+import com.example.achyp.weatherapp.manager.DBManagerImpl;
 import com.example.achyp.weatherapp.serviceimpl.WeatherServiceImpl;
 import com.example.achyp.weatherapp.services.WeatherService;
 import com.google.gson.Gson;
@@ -49,5 +52,11 @@ public class AppModule {
     @Singleton
     WeatherService provideWeatherService(final Retrofit retrofit, final Observer observer) {
         return new WeatherServiceImpl(retrofit, observer);
+    }
+
+    @Provides
+    @Singleton
+    DBManager provideDbManager() {
+        return new DBManagerImpl();
     }
 }

@@ -5,4 +5,6 @@
     <dimen name="dimen_s">4dp</dimen>
     <dimen name="four_dp">4dp</dimen>
     <dimen name="twenty_sp">20sp</dimen>
+    <dimen name="two_hundreds_dp">200dp</dimen>
+    <dimen name="ten_sp">10sp</dimen>
 </resources>
